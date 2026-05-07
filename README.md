@@ -1,73 +1,83 @@
-# AuditGPT — AI Financial Fraud Detection Dashboard
+# AuditGPT - AI Financial Risk Analysis
 
-A full-stack AI-powered financial fraud detection platform with a React frontend, FastAPI backend, and MongoDB integration.
+AuditGPT is a full-stack financial risk analysis platform that helps users review companies, detect fraud indicators, compare peers, track portfolios, and generate AI-assisted audit insights from financial data.
 
-![AuditGPT](https://img.shields.io/badge/AuditGPT-v1.0-00d4ff?style=flat-square)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=flat-square)
+**Live Demo:** https://auditgpt-financial-risk-ai-yylt.vercel.app/
+
+![AuditGPT](https://img.shields.io/badge/AuditGPT-Financial%20Risk%20AI-00d4ff?style=flat-square)
 ![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=flat-square)
+![MongoDB](https://img.shields.io/badge/MongoDB-Ready-47a248?style=flat-square)
 
----
 
-## Project Structure
+## Deployment
 
-```
-auditgpt/
-├── backend/
-│   ├── main.py                  # FastAPI app entry point
-│   ├── requirements.txt
-│   ├── routers/
-│   │   └── analysis.py          # POST /api/analyze-company
-│   ├── models/
-│   │   └── company.py           # Pydantic models
-│   └── services/
-│       └── mock_data.py         # Mock fraud analysis generator
-│
-├── frontend/
-│   ├── index.html
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   └── src/
-│       ├── main.jsx
-│       ├── App.jsx
-│       ├── index.css
-│       ├── utils/
-│       │   ├── api.js
-│       │   └── format.js
-│       └── components/
-│           ├── Header.jsx
-│           ├── SearchBar.jsx
-│           ├── FraudScoreCard.jsx
-│           ├── StatCards.jsx
-│           ├── AISummary.jsx
-│           ├── RevenueChart.jsx
-│           ├── RiskRadar.jsx
-│           ├── RedFlags.jsx
-│           ├── LoadingState.jsx
-│           └── EmptyState.jsx
-│
-├── docker-compose.yml
-└── README.md
-```
+The frontend is deployed on Vercel:
 
----
+```text
+https://auditgpt-financial-risk-ai-yylt.vercel.app/
+``
 
-## Quick Start
+## Overview
 
-### 1. Backend (FastAPI)
+AuditGPT combines a React dashboard with a FastAPI backend to analyze company-level financial risk. The application focuses on fraud scoring, red-flag detection, auditor sentiment, regulatory alerts, live market context, peer comparison, portfolio tracking, and downloadable audit reports.
+
+## Key Features
+
+- AI-assisted fraud risk scoring with clear risk levels
+- Company search with NSE company data support
+- Revenue, expense, and anomaly visualizations
+- Red-flag detection for suspicious financial patterns
+- Auditor sentiment and regulatory alert insights
+- Peer comparison and similar company analysis
+- Live price ticker and market context
+- Authentication-protected dashboard pages
+- Saved portfolio and analysis history workflows
+- Downloadable PDF audit report generation
+- MongoDB-ready backend for persistence
+- Docker Compose support for local full-stack development
+
+## Tech Stack
+
+- **Frontend:** React 18, Vite, Tailwind CSS, Recharts, Framer Motion, Lucide React
+- **Backend:** FastAPI, Uvicorn, Pydantic, Python
+- **Database:** MongoDB with Motor async driver
+- **Data and APIs:** Yahoo Finance, NSE company data, configurable financial API providers
+- **Reports:** jsPDF and html2canvas
+- **Deployment:** Vercel for frontend deployment
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- Python 3.11+
+- MongoDB local instance or hosted MongoDB connection
+- Git
+
+### Backend Setup
 
 ```bash
 cd backend
-python -m venv venv             # Mac : python3 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-API will be live at: http://localhost:8000
-Swagger docs: http://localhost:8000/docs
+Backend API:
 
-### 2. Frontend (React + Vite)
+```text
+http://localhost:8000
+```
+
+API documentation:
+
+```text
+http://localhost:8000/docs
+```
+
+### Frontend Setup
 
 ```bash
 cd frontend
@@ -75,88 +85,70 @@ npm install
 npm run dev
 ```
 
-App will be live at: http://localhost:5173
+Frontend app:
 
----
-
-## API Reference
-
-### POST /api/analyze-company
-
-**Request:**
-```json
-{ "company_name": "Enron Corp" }
+```text
+http://localhost:5173
 ```
 
-**Response:**
+## Environment Variables
+
+Create a `.env` file inside the `backend` folder for local configuration:
+
+```env
+MONGODB_URL=mongodb://localhost:27017
+DB_NAME=auditgpt
+JWT_SECRET_KEY=your_secret_key
+```
+
+Add any third-party financial API keys only in local environment files or hosting provider environment settings. Do not commit secrets to GitHub.
+
+## API Highlights
+
+### Analyze Company
+
+```http
+POST /api/analyze-company
+```
+
+Example request:
+
 ```json
 {
-  "company_name": "Enron Corp",
-  "analyzed_at": "2024-01-15T10:30:00",
-  "fraud_score": 87,
-  "risk_level": "CRITICAL",
-  "risk_color": "#ef4444",
-  "summary": "AI-generated risk summary...",
-  "red_flags": ["Revenue recognized before delivery confirmed", ...],
-  "revenue_trend": [{ "month": "Jan", "value": 42000000, "anomaly": false }, ...],
-  "expense_trend": [...],
-  "anomaly_flags": [{ "month": "Mar", "type": "Revenue spike" }, ...],
-  "risk_categories": [{ "category": "Revenue Manipulation", "score": 91 }, ...],
-  "financials": {
-    "total_revenue": 580000000,
-    "total_expenses": 430000000,
-    "anomalies_detected": 3,
-    "periods_reviewed": 12,
-    "data_completeness": 94
-  }
+  "company_name": "Reliance Industries"
 }
 ```
 
----
+Example response fields:
 
-## Features
+```json
+{
+  "company_name": "Reliance Industries",
+  "fraud_score": 42,
+  "risk_level": "MODERATE",
+  "summary": "AI-generated financial risk summary",
+  "red_flags": [],
+  "risk_categories": [],
+  "financials": {}
+}
+```
 
-| Feature | Status |
-|---------|--------|
-| Company search input | ✅ |
-| Quick suggestion chips | ✅ |
-| Fraud risk score ring | ✅ |
-| Risk level badge (CRITICAL/HIGH/MODERATE/LOW) | ✅ |
-| 6 financial stat cards | ✅ |
-| AI summary with typewriter effect | ✅ |
-| Revenue & expense bar+line chart | ✅ |
-| Anomaly markers on chart | ✅ |
-| Risk breakdown bars (6 categories) | ✅ |
-| Red flags grid | ✅ |
-| Skeleton loading state | ✅ |
-| Error state | ✅ |
-| MongoDB integration (ready) | ✅ |
+## Docker Setup
 
----
-
-## Docker (Optional)
+Run the full stack locally with Docker:
 
 ```bash
 docker-compose up --build
 ```
 
----
+Services:
 
-## MongoDB Integration
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:8000`
+- MongoDB: `mongodb://localhost:27017`
 
-To enable real data persistence, update `backend/services/mock_data.py` to use the `motor` async MongoDB client. A `.env` file template:
+For production, configure backend API URLs and environment variables in the hosting dashboard before deployment.
 
-```env
-MONGODB_URL=mongodb://localhost:27017
-DB_NAME=auditgpt
-```
+## License
 
----
-
-## Tech Stack
-
-- **Frontend**: React 18, Vite, Tailwind CSS, Recharts, Lucide R`eact
-- **Backend**: FastAPI, Uvicorn, Pydantic v2
-- **Database**: MongoDB (via Motor async driver)
-- **Fonts**: Syne (display), DM Sans (body), JetBrains Mono (data)
-# auditgpt-financial-risk-ai
+This project is built for educational and financial risk analysis use cases.
