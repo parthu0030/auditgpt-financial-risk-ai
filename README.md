@@ -16,7 +16,7 @@ The frontend is deployed on Vercel:
 
 ```text
 https://auditgpt-financial-risk-ai-yylt.vercel.app/
-``
+```
 
 ## Overview
 
